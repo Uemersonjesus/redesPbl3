@@ -1,0 +1,26 @@
+FROM golang:1.22-alpine AS builder
+WORKDIR /app
+
+# git needed for go mod to fetch from github
+RUN apk add --no-cache git
+
+# Env: bypass sum DB check (private/new modules), enable module mode
+ENV GONOSUMCHECK=* GOFLAGS=-mod=mod CGO_ENABLED=0
+
+# Copy go.mod first for better layer caching
+COPY abci-app/go.mod .
+
+# Try to download deps (may fail if sum missing, tidy will fix)
+RUN go mod download || true
+
+# Copy full source, tidy resolves deps, build
+COPY abci-app/ .
+RUN go mod tidy && go build -o /bin/abci-app .
+
+# --- Runtime ---
+FROM alpine:3.19
+RUN apk add --no-cache ca-certificates
+COPY --from=builder /bin/abci-app /bin/abci-app
+RUN mkdir -p /data
+EXPOSE 26658 8080
+CMD ["/bin/abci-app"]

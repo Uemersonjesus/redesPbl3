@@ -1,0 +1,17 @@
+FROM golang:1.22-alpine AS builder
+WORKDIR /app
+
+RUN apk add --no-cache git
+
+ENV GONOSUMCHECK=* GOFLAGS=-mod=mod CGO_ENABLED=0
+
+COPY drone/go.mod .
+RUN go mod download || true
+
+COPY drone/ .
+RUN go mod tidy && go build -o /bin/drone .
+
+FROM alpine:3.19
+RUN apk add --no-cache ca-certificates
+COPY --from=builder /bin/drone /bin/drone
+CMD ["/bin/drone"]

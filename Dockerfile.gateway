@@ -1,0 +1,21 @@
+FROM golang:1.22-alpine AS builder
+WORKDIR /app
+
+RUN apk add --no-cache git
+
+ENV GONOSUMCHECK=* GOFLAGS=-mod=mod CGO_ENABLED=0
+
+COPY frontend/go.mod .
+RUN go mod download || true
+
+# Only copy the Go source (not index.html, builder doesn't need it)
+COPY frontend/gateway.go .
+RUN go mod tidy && go build -o /bin/gateway .
+
+FROM alpine:3.19
+RUN apk add --no-cache ca-certificates
+COPY --from=builder /bin/gateway /bin/gateway
+COPY frontend/index.html /frontend/index.html
+COPY frontend/mango.png /frontend/mango.png
+EXPOSE 3000
+CMD ["/bin/gateway"]

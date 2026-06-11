@@ -1,0 +1,230 @@
+# PC1 — node0 + node1 + todos os serviços de aplicação
+networks:
+  mango-net:
+    driver: bridge
+
+services:
+
+  abci-app-0:
+    build:
+      context: .
+      dockerfile: Dockerfile.abci
+    container_name: abci-app-0
+    environment:
+      - ABCI_ADDR=tcp://0.0.0.0:26658
+      - API_PORT=8080
+      - STATE_PATH=/data/state.json
+    volumes:
+      - ./nodes/abci-state-0:/data
+    ports:
+      - "8080:8080"
+    networks:
+      - mango-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  abci-app-1:
+    build:
+      context: .
+      dockerfile: Dockerfile.abci
+    container_name: abci-app-1
+    environment:
+      - ABCI_ADDR=tcp://0.0.0.0:26658
+      - API_PORT=8080
+      - STATE_PATH=/data/state.json
+    volumes:
+      - ./nodes/abci-state-1:/data
+    networks:
+      - mango-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  node0:
+    image: cometbft/cometbft:v0.38.12
+    container_name: node0
+    user: "0:0"
+    command: node --home /cometbft --proxy_app tcp://abci-app-0:26658 --log_level error
+    volumes:
+      - ./nodes/node0:/cometbft
+    ports:
+      - "26657:26657"
+      - "26656:26656"
+    networks:
+      - mango-net
+    depends_on:
+      abci-app-0:
+        condition: service_healthy
+    restart: unless-stopped
+
+  node1:
+    image: cometbft/cometbft:v0.38.12
+    container_name: node1
+    user: "0:0"
+    command: node --home /cometbft --proxy_app tcp://abci-app-1:26658 --log_level error
+    volumes:
+      - ./nodes/node1:/cometbft
+    ports:
+      - "26667:26657"
+      - "26666:26656"
+    networks:
+      - mango-net
+    depends_on:
+      abci-app-1:
+        condition: service_healthy
+    restart: unless-stopped
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile.scheduler
+    container_name: scheduler
+    environment:
+      - ABCI_API_URL=${ABCI_API_URL}
+      - COMET_RPC_NODES=http://${NODE0_HOST}:${NODE0_RPC_PORT},http://${NODE1_HOST}:${NODE1_RPC_PORT},http://${NODE2_HOST}:${NODE2_RPC_PORT},http://${NODE3_HOST}:${NODE3_RPC_PORT}
+    networks:
+      - mango-net
+    depends_on:
+      - node0
+      - abci-app-0
+    restart: unless-stopped
+
+  sensor-alpha:
+    build:
+      context: .
+      dockerfile: Dockerfile.sensor
+    container_name: sensor-alpha
+    environment:
+      - SENSOR_ID=sensor-alpha
+      - SECTOR_ID=sector-alpha
+      - COMET_RPC_NODES=http://${NODE0_HOST}:${NODE0_RPC_PORT},http://${NODE1_HOST}:${NODE1_RPC_PORT},http://${NODE2_HOST}:${NODE2_RPC_PORT},http://${NODE3_HOST}:${NODE3_RPC_PORT}
+    networks:
+      - mango-net
+    depends_on:
+      - node0
+    restart: unless-stopped
+
+  sensor-beta:
+    build:
+      context: .
+      dockerfile: Dockerfile.sensor
+    container_name: sensor-beta
+    environment:
+      - SENSOR_ID=sensor-beta
+      - SECTOR_ID=sector-beta
+      - COMET_RPC_NODES=http://${NODE0_HOST}:${NODE0_RPC_PORT},http://${NODE1_HOST}:${NODE1_RPC_PORT},http://${NODE2_HOST}:${NODE2_RPC_PORT},http://${NODE3_HOST}:${NODE3_RPC_PORT}
+    networks:
+      - mango-net
+    depends_on:
+      - node0
+    restart: unless-stopped
+
+  sensor-gamma:
+    build:
+      context: .
+      dockerfile: Dockerfile.sensor
+    container_name: sensor-gamma
+    environment:
+      - SENSOR_ID=sensor-gamma
+      - SECTOR_ID=sector-gamma
+      - COMET_RPC_NODES=http://${NODE0_HOST}:${NODE0_RPC_PORT},http://${NODE1_HOST}:${NODE1_RPC_PORT},http://${NODE2_HOST}:${NODE2_RPC_PORT},http://${NODE3_HOST}:${NODE3_RPC_PORT}
+    networks:
+      - mango-net
+    depends_on:
+      - node0
+    restart: unless-stopped
+
+  drone-1:
+    build:
+      context: .
+      dockerfile: Dockerfile.drone
+    container_name: drone-1
+    environment:
+      - DRONE_ID=drone-1
+      - ABCI_API_URL=${ABCI_API_URL}
+      - COMET_RPC_NODES=http://${NODE0_HOST}:${NODE0_RPC_PORT},http://${NODE1_HOST}:${NODE1_RPC_PORT},http://${NODE2_HOST}:${NODE2_RPC_PORT},http://${NODE3_HOST}:${NODE3_RPC_PORT}
+    networks:
+      - mango-net
+    depends_on:
+      - node0
+      - abci-app-0
+    restart: "no"
+
+  drone-2:
+    build:
+      context: .
+      dockerfile: Dockerfile.drone
+    container_name: drone-2
+    environment:
+      - DRONE_ID=drone-2
+      - ABCI_API_URL=${ABCI_API_URL}
+      - COMET_RPC_NODES=http://${NODE0_HOST}:${NODE0_RPC_PORT},http://${NODE1_HOST}:${NODE1_RPC_PORT},http://${NODE2_HOST}:${NODE2_RPC_PORT},http://${NODE3_HOST}:${NODE3_RPC_PORT}
+    networks:
+      - mango-net
+    depends_on:
+      - node0
+      - abci-app-0
+    restart: "no"
+
+  drone-3:
+    build:
+      context: .
+      dockerfile: Dockerfile.drone
+    container_name: drone-3
+    environment:
+      - DRONE_ID=drone-3
+      - ABCI_API_URL=${ABCI_API_URL}
+      - COMET_RPC_NODES=http://${NODE0_HOST}:${NODE0_RPC_PORT},http://${NODE1_HOST}:${NODE1_RPC_PORT},http://${NODE2_HOST}:${NODE2_RPC_PORT},http://${NODE3_HOST}:${NODE3_RPC_PORT}
+    networks:
+      - mango-net
+    depends_on:
+      - node0
+      - abci-app-0
+    restart: "no"
+
+  gateway-usa:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    container_name: gateway-usa
+    environment:
+      - NATION_ID=usa
+      - NATION_FIAT=USD
+      - ABCI_API_URL=${ABCI_API_URL}
+      - COMET_RPC_NODES=http://${NODE0_HOST}:${NODE0_RPC_PORT},http://${NODE1_HOST}:${NODE1_RPC_PORT},http://${NODE2_HOST}:${NODE2_RPC_PORT},http://${NODE3_HOST}:${NODE3_RPC_PORT}
+      - PORT=3000
+    ports:
+      - "3001:3000"
+    networks:
+      - mango-net
+    depends_on:
+      - abci-app-0
+      - node0
+    restart: unless-stopped
+
+  gateway-israel:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    container_name: gateway-israel
+    environment:
+      - NATION_ID=israel
+      - NATION_FIAT=ILS
+      - ABCI_API_URL=${ABCI_API_URL}
+      - COMET_RPC_NODES=http://${NODE0_HOST}:${NODE0_RPC_PORT},http://${NODE1_HOST}:${NODE1_RPC_PORT},http://${NODE2_HOST}:${NODE2_RPC_PORT},http://${NODE3_HOST}:${NODE3_RPC_PORT}
+      - PORT=3000
+    ports:
+      - "3002:3000"
+    networks:
+      - mango-net
+    depends_on:
+      - abci-app-0
+      - node1
+    restart: unless-stopped
