@@ -1,0 +1,67 @@
+# 4 PCs — PC do node1 (Israel)
+# Contem: node1, abci-app-1, gateway-israel
+#
+# Comando: docker compose -f docker-compose.4pc-node1.yml up --build -d
+
+networks:
+  mango-net:
+    driver: bridge
+
+services:
+
+  abci-app-1:
+    build:
+      context: .
+      dockerfile: Dockerfile.abci
+    container_name: abci-app-1
+    environment:
+      - ABCI_ADDR=tcp://0.0.0.0:26658
+      - API_PORT=8080
+      - STATE_PATH=/data/state.json
+    volumes:
+      - ./nodes/abci-state-1:/data
+    networks:
+      - mango-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  node1:
+    image: cometbft/cometbft:v0.38.12
+    container_name: node1
+    user: "0:0"
+    command: node --home /cometbft --proxy_app tcp://abci-app-1:26658 --log_level error
+    volumes:
+      - ./nodes/node1:/cometbft
+    ports:
+      - "26657:26657"
+      - "26656:26656"
+    networks:
+      - mango-net
+    depends_on:
+      abci-app-1:
+        condition: service_healthy
+    restart: unless-stopped
+
+  gateway-israel:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    container_name: gateway-israel
+    environment:
+      - NATION_ID=israel
+      - NATION_FIAT=ILS
+      - ABCI_API_URL=http://abci-app-1:8080
+      - COMET_RPC_NODES=http://${NODE0_HOST}:${NODE0_RPC_PORT},http://${NODE1_HOST}:${NODE1_RPC_PORT},http://${NODE2_HOST}:${NODE2_RPC_PORT},http://${NODE3_HOST}:${NODE3_RPC_PORT}
+      - PORT=3000
+    ports:
+      - "3002:3000"
+    networks:
+      - mango-net
+    depends_on:
+      - abci-app-1
+      - node1
+    restart: unless-stopped

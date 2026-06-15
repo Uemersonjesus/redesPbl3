@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MangoChain — Strait of Hormuz Consortium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#060a0f; --bg2:#0c1219; --bg3:#111a24;
+  --border:#1e3a52; --border2:#2a5278;
+  --gold:#f0a500; --gold2:#ffca28;
+  --green:#00e676; --red:#ff1744; --orange:#ff6d00; --blue:#29b6f6; --purple:#ce93d8;
+  --muted:#4a6a82; --text:#c8dce9; --text2:#8aafc4;
+  --glow-gold:0 0 20px rgba(240,165,0,.4);
+  --glow-green:0 0 12px rgba(0,230,118,.4);
+  --glow-red:0 0 12px rgba(255,23,68,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px);pointer-events:none;z-index:999;}
+
+/* ── Header ── */
+header{display:flex;align-items:center;justify-content:space-between;padding:12px 28px;background:var(--bg2);border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:14px;}
+.mango-icon{width:42px;height:42px;background:radial-gradient(circle at 40% 35%,#ff8c00,#e65100);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;animation:pulse 3s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 15px rgba(240,165,0,.4);}50%{box-shadow:0 0 30px rgba(240,165,0,.7),0 0 50px rgba(240,165,0,.2);}}
+.logo-text{font-family:'Orbitron',monospace;font-weight:900;font-size:1.2rem;color:var(--gold2);letter-spacing:3px;text-shadow:var(--glow-gold);}
+.logo-sub{font-size:.62rem;color:var(--muted);letter-spacing:2px;font-family:'Share Tech Mono',monospace;margin-top:2px;}
+.header-right{display:flex;align-items:center;gap:18px;}
+.nation-badge{display:flex;align-items:center;gap:10px;padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;}
+.nation-flag{font-size:1.6rem;}
+.nation-name{font-family:'Orbitron',monospace;font-size:.85rem;font-weight:700;color:var(--gold2);}
+.nation-fiat{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);}
+.chain-status{display:flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--text2);}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:var(--glow-green);animation:blink 1.5s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.ticker-val{color:var(--gold);font-weight:700;}
+
+/* ── Main nav tabs ── */
+.main-nav{display:flex;gap:2px;padding:0 28px;background:var(--bg2);border-bottom:1px solid var(--border);}
+.nav-tab{padding:10px 22px;font-family:'Orbitron',monospace;font-size:.65rem;letter-spacing:1.5px;color:var(--muted);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase;}
+.nav-tab.active{color:var(--gold2);border-bottom-color:var(--gold);}
+.nav-tab:hover:not(.active){color:var(--text2);}
+.page{display:none;}.page.active{display:block;}
+
+/* ── Layout ── */
+.container{max-width:1440px;margin:0 auto;padding:22px 28px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:18px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+
+/* ── Cards ── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:18px;}
+.card-header{padding:11px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.02);}
+.card-title{font-family:'Orbitron',monospace;font-size:.68rem;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+.card-body{padding:16px;}
+.card-sub{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);}
+
+/* ── Stat tiles ── */
+.stat-tile{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:16px;position:relative;overflow:hidden;}
+.stat-tile::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;}
+.stat-tile.gold::before{background:var(--gold);}
+.stat-tile.green::before{background:var(--green);}
+.stat-tile.blue::before{background:var(--blue);}
+.stat-tile.orange::before{background:var(--orange);}
+.stat-tile.purple::before{background:var(--purple);}
+.stat-label{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.stat-value{font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:900;color:var(--gold2);line-height:1;}
+.stat-sub{font-size:.75rem;color:var(--text2);margin-top:4px;font-family:'Share Tech Mono',monospace;}
+
+/* ── Drones ── */
+.drone-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:14px;text-align:center;transition:border-color .3s;}
+.drone-card.idle{border-color:#1e5c3a;} .drone-card.busy{border-color:#5c3a00;} .drone-card.crashed{border-color:#5c0000;border-width:2px;animation:crash-pulse 1s ease-in-out infinite;} .drone-card.offline{border-color:#2a2a2a;}
+@keyframes crash-pulse{0%,100%{box-shadow:none;}50%{box-shadow:0 0 16px rgba(255,23,68,.5);}}
+.drone-icon{font-size:1.8rem;margin-bottom:6px;display:block;}
+.drone-id{font-family:'Orbitron',monospace;font-size:.65rem;color:var(--text2);letter-spacing:1px;margin-bottom:5px;}
+.drone-status{font-family:'Share Tech Mono',monospace;font-size:.72rem;padding:2px 10px;border-radius:3px;display:inline-block;font-weight:700;}
+.status-idle{background:rgba(0,230,118,.15);color:var(--green);}
+.status-busy{background:rgba(255,109,0,.15);color:var(--orange);}
+.status-crashed{background:rgba(255,23,68,.15);color:var(--red);}
+.status-offline{background:rgba(74,106,130,.15);color:var(--muted);}
+.drone-alert{font-size:.62rem;color:var(--muted);margin-top:5px;font-family:'Share Tech Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* ── Alerts ── */
+.alert-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(30,58,82,.4);}
+.alert-row:last-child{border-bottom:none;}
+.sev-badge{font-family:'Orbitron',monospace;font-size:.58rem;font-weight:700;padding:3px 6px;border-radius:3px;white-space:nowrap;min-width:38px;text-align:center;}
+.sev-4{background:rgba(255,23,68,.2);color:var(--red);border:1px solid rgba(255,23,68,.4);}
+.sev-3{background:rgba(255,109,0,.2);color:var(--orange);border:1px solid rgba(255,109,0,.4);}
+.sev-2{background:rgba(41,182,246,.2);color:var(--blue);border:1px solid rgba(41,182,246,.4);}
+.sev-1{background:rgba(74,106,130,.2);color:var(--muted);border:1px solid rgba(74,106,130,.4);}
+.alert-body{flex:1;}
+.alert-type{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:2px;}
+.alert-meta{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);}
+.alert-status-badge{font-family:'Share Tech Mono',monospace;font-size:.62rem;padding:2px 8px;border-radius:3px;white-space:nowrap;}
+.ast-pending{background:rgba(240,165,0,.15);color:var(--gold);}
+.ast-assigned{background:rgba(255,109,0,.15);color:var(--orange);}
+.ast-completed{background:rgba(0,230,118,.15);color:var(--green);}
+
+/* ── TX History ── */
+.tx-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(30,58,82,.3);font-family:'Share Tech Mono',monospace;font-size:.68rem;}
+.tx-row:last-child{border-bottom:none;}
+.tx-type{padding:2px 7px;border-radius:3px;font-size:.58rem;font-weight:700;min-width:90px;text-align:center;}
+.tx-DEPOSIT{background:rgba(0,230,118,.15);color:var(--green);}
+.tx-ALERT{background:rgba(255,23,68,.15);color:var(--red);}
+.tx-DRONE_DISPATCH{background:rgba(255,109,0,.15);color:var(--orange);}
+.tx-MISSION_REPORT{background:rgba(41,182,246,.15);color:var(--blue);}
+.tx-DRONE_STATUS{background:rgba(74,106,130,.15);color:var(--muted);}
+.tx-TRANSFER{background:rgba(240,165,0,.15);color:var(--gold);}
+.tx-id{color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;}
+.tx-sender{color:var(--text2);}
+.tx-time{color:var(--muted);white-space:nowrap;}
+
+/* ── Nation ledger ── */
+.nation-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(30,58,82,.5);}
+.nation-row:last-child{border-bottom:none;}
+.nation-info{display:flex;align-items:center;gap:10px;}
+.flag-sm{font-size:1.2rem;}
+.nation-label{font-size:.85rem;font-weight:600;color:var(--text);}
+.nation-fiat-label{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);}
+.balance{font-family:'Orbitron',monospace;font-size:.95rem;font-weight:700;color:var(--gold2);}
+
+/* ── Deposit form ── */
+.deposit-form{display:flex;flex-direction:column;gap:14px;}
+.field-label{font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.field-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:9px 12px;color:var(--text);font-family:'Share Tech Mono',monospace;font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s;}
+.field-input:focus{border-color:var(--gold);box-shadow:0 0 12px rgba(240,165,0,.2);}
+.preview-line{font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--text2);background:var(--bg3);padding:9px 12px;border-radius:4px;border:1px solid var(--border);}
+.preview-line span{color:var(--gold2);font-weight:700;}
+.btn-primary{background:linear-gradient(135deg,#e65100,#f0a500);border:none;border-radius:4px;padding:11px;color:#000;font-family:'Orbitron',monospace;font-weight:700;font-size:.75rem;letter-spacing:2px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.btn-primary:hover{background:linear-gradient(135deg,#f0a500,#ffca28);box-shadow:var(--glow-gold);transform:translateY(-1px);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;}
+
+/* ── Inner tab bar ── */
+.tab-bar{display:flex;gap:2px;margin-bottom:14px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px;}
+.tab{flex:1;padding:7px;text-align:center;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:1px;color:var(--muted);cursor:pointer;border-radius:4px;transition:all .2s;border:none;background:transparent;text-transform:uppercase;}
+.tab.active{background:var(--bg2);color:var(--gold2);border:1px solid var(--border2);}
+.tab-content{display:none;} .tab-content.active{display:block;}
+
+/* ── Scroll box ── */
+.scroll-box{max-height:320px;overflow-y:auto;}
+.scroll-box::-webkit-scrollbar{width:3px;}
+.scroll-box::-webkit-scrollbar-track{background:var(--bg);}
+.scroll-box::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.empty-state{text-align:center;padding:28px;color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:1px;}
+
+/* ── Notification ── */
+.notification{position:fixed;top:76px;right:28px;padding:11px 18px;border-radius:4px;font-family:'Share Tech Mono',monospace;font-size:.77rem;z-index:1000;animation:slideIn .3s ease,fadeOut .3s ease 2.5s forwards;max-width:300px;}
+.notification.success{background:rgba(0,230,118,.15);border:1px solid var(--green);color:var(--green);box-shadow:var(--glow-green);}
+.notification.error{background:rgba(255,23,68,.15);border:1px solid var(--red);color:var(--red);box-shadow:var(--glow-red);}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+@keyframes fadeOut{to{opacity:0;transform:translateX(100%);}}
+
+/* ── Reports ── */
+.filter-btn{background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-family:'Orbitron',monospace;font-size:.55rem;padding:3px 10px;border-radius:3px;cursor:pointer;transition:all .2s;}
+.filter-btn:hover{border-color:var(--accent);color:var(--accent);}
+.filter-btn.active{background:rgba(0,188,212,.15);border-color:var(--accent);color:var(--accent);}
+.report-row{padding:9px 0;border-bottom:1px solid rgba(30,58,82,.4);}
+.report-row:last-child{border-bottom:none;}
+.report-outcome{font-size:.82rem;font-weight:700;color:var(--blue);margin-bottom:2px;}
+.report-meta{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);}
+
+/* ── ANALYTICS: SVG charts ── */
+.chart-wrap{width:100%;overflow:hidden;border-radius:4px;}
+svg.chart{width:100%;font-family:'Share Tech Mono',monospace;}
+.chart-label{font-size:9px;fill:var(--muted);}
+.chart-title-txt{font-size:10px;fill:var(--gold);font-family:'Orbitron',monospace;letter-spacing:1px;}
+
+/* ── CONSENSUS: validator cards ── */
+.val-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:14px;position:relative;}
+.val-card.leader{border-color:var(--gold);box-shadow:0 0 14px rgba(240,165,0,.25);}
+.val-badge{font-family:'Orbitron',monospace;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:3px;margin-bottom:8px;display:inline-block;}
+.val-badge.leader-badge{background:rgba(240,165,0,.2);color:var(--gold2);border:1px solid rgba(240,165,0,.4);}
+.val-badge.peer-badge{background:rgba(74,106,130,.15);color:var(--muted);}
+.val-addr{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--text2);margin-bottom:4px;word-break:break-all;}
+.val-power{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:var(--blue);}
+.val-power-label{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);}
+
+/* consensus info rows */
+.cons-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(30,58,82,.4);font-family:'Share Tech Mono',monospace;font-size:.72rem;}
+.cons-row:last-child{border-bottom:none;}
+.cons-key{color:var(--muted);}
+.cons-val{color:var(--gold2);font-weight:700;}
+
+/* leader history table */
+.lh-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(30,58,82,.3);font-family:'Share Tech Mono',monospace;font-size:.68rem;}
+.lh-row:last-child{border-bottom:none;}
+.lh-height{color:var(--gold);min-width:60px;}
+.lh-addr{color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;}
+.lh-time{color:var(--muted);white-space:nowrap;}
+
+.watermark{position:fixed;bottom:18px;right:28px;font-family:'Orbitron',monospace;font-size:.58rem;color:rgba(240,165,0,.12);letter-spacing:3px;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="mango-icon"><img src="/mango.png" alt="Mango" style="width:36px;height:36px;border-radius:50%;object-fit:cover;"/></div>
+    <div>
+      <div class="logo-text">MANGO CHAIN</div>
+      <div class="logo-sub">STRAIT OF HORMUZ CONSORTIUM · LEDGER v1.0</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="chain-status">
+      <div class="dot" id="chainDot"></div>
+      <span>BLOCK <span id="blockHeight" class="ticker-val">—</span></span>
+    </div>
+    <div class="nation-badge">
+      <span class="nation-flag" id="nationFlag">🏳️</span>
+      <div>
+        <div class="nation-name" id="nationName">LOADING...</div>
+        <div class="nation-fiat" id="nationFiatHdr">—</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main navigation -->
+<nav class="main-nav">
+  <button class="nav-tab active" onclick="showPage('dashboard')">📊 DASHBOARD</button>
+  <button class="nav-tab" onclick="showPage('analytics')">📈 ANALYTICS</button>
+  <button class="nav-tab" onclick="showPage('consensus')">🔗 CONSENSUS</button>
+  <button class="nav-tab" onclick="showPage('ledger')">🔍 LEDGER</button>
+</nav>
+
+<!-- ══════════════════════ PAGE: DASHBOARD ══════════════════════ -->
+<div class="page active" id="page-dashboard">
+<div class="container">
+
+  <div class="grid-4">
+    <div class="stat-tile gold">
+      <div class="stat-label">MY BALANCE</div>
+      <div class="stat-value" id="myBalance">—</div>
+      <div class="stat-sub">MANGO TOKENS</div>
+    </div>
+    <div class="stat-tile green">
+      <div class="stat-label">ACTIVE DRONES</div>
+      <div class="stat-value" id="activeDrones">—</div>
+      <div class="stat-sub">ON MISSION</div>
+    </div>
+    <div class="stat-tile blue">
+      <div class="stat-label">PENDING ALERTS</div>
+      <div class="stat-value" id="pendingAlerts">—</div>
+      <div class="stat-sub">IN QUEUE</div>
+    </div>
+    <div class="stat-tile orange">
+      <div class="stat-label">MISSIONS COMPLETE</div>
+      <div class="stat-value" id="totalReports">—</div>
+      <div class="stat-sub">IMMUTABLE REPORTS</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <!-- Drone fleet -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🚁 Drone Fleet</span>
+          <span class="card-sub" id="droneTimestamp">—</span>
+        </div>
+        <div class="card-body">
+          <div id="droneGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <div class="empty-state" style="grid-column:span 3">LOADING FLEET...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alert queue -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">⚠️ Alert Queue</span>
+          <span class="card-sub">PRIORITY ORDER</span>
+        </div>
+        <div class="card-body">
+          <div class="scroll-box" id="alertList">
+            <div class="empty-state">NO ACTIVE ALERTS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- Deposit/Transfer -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">💰 Contribute Funds</span></div>
+        <div class="card-body">
+          <div class="tab-bar">
+            <button class="tab active" onclick="switchTab('deposit')">DEPOSIT FIAT</button>
+            <button class="tab" onclick="switchTab('transfer')">TRANSFER</button>
+          </div>
+          <div class="tab-content active" id="tab-deposit">
+            <div class="deposit-form">
+              <div>
+                <div class="field-label">Amount (<span id="fiatLabel">FIAT</span>)</div>
+                <input class="field-input" type="number" id="depositAmount" placeholder="1000.00" min="0.01" step="0.01"/>
+              </div>
+              <div class="preview-line" id="depositPreview">Enter amount to preview conversion</div>
+              <button class="btn-primary" id="depositBtn" onclick="submitDeposit()">▶ DEPOSIT TO MANGO POOL</button>
+            </div>
+          </div>
+          <div class="tab-content" id="tab-transfer">
+            <div class="deposit-form">
+              <div>
+                <div class="field-label">Recipient Nation</div>
+                <select class="field-input" id="transferTo">
+                  <option value="usa">🇺🇸 United States</option>
+                  <option value="israel">🇮🇱 Israel</option>
+                  <option value="iran">🇮🇷 Iran</option>
+                  <option value="maritimecorp">🚢 Maritime Corp</option>
+                </select>
+              </div>
+              <div>
+                <div class="field-label">Amount (MANGO)</div>
+                <input class="field-input" type="number" id="transferAmount" placeholder="100.00" min="0.01" step="0.01"/>
+              </div>
+              <button class="btn-primary" onclick="submitTransfer()">▶ SEND MANGO TOKENS</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nation balances -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🌐 Nation Balances</span>
+          <span class="card-sub">DISTRIBUTED LEDGER</span>
+        </div>
+        <div class="card-body" id="nationLedger">
+          <div class="empty-state">LOADING LEDGER...</div>
+        </div>
+      </div>
+
+      <!-- Mission reports -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📋 Mission Reports</span>
+          <span class="card-sub">IMMUTABLE RECORDS</span>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+            <button class="filter-btn active" onclick="setReportFilter('all',this)">ALL</button>
+            <button class="filter-btn" onclick="setReportFilter('drone-1',this)">DRONE-1</button>
+            <button class="filter-btn" onclick="setReportFilter('drone-2',this)">DRONE-2</button>
+            <button class="filter-btn" onclick="setReportFilter('drone-3',this)">DRONE-3</button>
+          </div>
+          <div class="scroll-box" id="reportList">
+            <div class="empty-state">NO REPORTS YET</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════ PAGE: ANALYTICS ══════════════════════ -->
+<div class="page" id="page-analytics">
+<div class="container">
+
+  <div class="grid-4" style="margin-bottom:18px">
+    <div class="stat-tile gold">
+      <div class="stat-label">TOTAL TXS</div>
+      <div class="stat-value" id="an-totalTx">—</div>
+      <div class="stat-sub">ALL TIME</div>
+    </div>
+    <div class="stat-tile red" style="--red:#ff1744">
+      <div class="stat-label" style="color:var(--muted)">CRASHED DRONES</div>
+      <div class="stat-value" id="an-crashed">—</div>
+      <div class="stat-sub">INCIDENTS</div>
+    </div>
+    <div class="stat-tile blue">
+      <div class="stat-label">TOKENS SPENT</div>
+      <div class="stat-value" id="an-spent">—</div>
+      <div class="stat-sub">ON DISPATCHES</div>
+    </div>
+    <div class="stat-tile purple">
+      <div class="stat-label">AVG MISSION</div>
+      <div class="stat-value" id="an-avgMission">—</div>
+      <div class="stat-sub">SECONDS</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Alerts over time chart -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">⚡ Alerts Over Time</span>
+        <span class="card-sub">LAST 20 ALERTS</span>
+      </div>
+      <div class="card-body" style="padding:12px">
+        <div class="chart-wrap">
+          <svg id="alertsChart" class="chart" height="160" viewBox="0 0 500 160"></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- TX type breakdown donut -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🔀 Transaction Types</span>
+        <span class="card-sub">COMPOSITION</span>
+      </div>
+      <div class="card-body" style="padding:12px">
+        <div class="chart-wrap">
+          <svg id="txDonut" class="chart" height="160" viewBox="0 0 500 160"></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Nation payment pie -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">💳 Payment Distribution</span>
+        <span class="card-sub">ROUND-ROBIN RESULT</span>
+      </div>
+      <div class="card-body" style="padding:12px">
+        <div class="chart-wrap">
+          <svg id="paymentChart" class="chart" height="160" viewBox="0 0 500 160"></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alert severity breakdown bar -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🎯 Alert Severity Breakdown</span>
+        <span class="card-sub">ALL ALERTS</span>
+      </div>
+      <div class="card-body" style="padding:12px">
+        <div class="chart-wrap">
+          <svg id="sevChart" class="chart" height="160" viewBox="0 0 500 160"></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mission outcome breakdown -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">✅ Mission Outcomes</span>
+      <span class="card-sub">IMMUTABLE REPORTS BREAKDOWN</span>
+    </div>
+    <div class="card-body" style="padding:12px">
+      <div class="chart-wrap">
+        <svg id="outcomeChart" class="chart" height="140" viewBox="0 0 900 140"></svg>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════ PAGE: CONSENSUS ══════════════════════ -->
+<div class="page" id="page-consensus">
+<div class="container">
+
+  <div class="grid-2" style="margin-bottom:0">
+    <!-- Current consensus state -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🗳️ Current Consensus State</span>
+        <span class="card-sub" id="consTimestamp">—</span>
+      </div>
+      <div class="card-body" id="consState">
+        <div class="empty-state">LOADING CONSENSUS DATA...</div>
+      </div>
+    </div>
+
+    <!-- Validators -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🛡️ Active Validators</span>
+        <span class="card-sub">TENDERMINT BFT · f=1</span>
+      </div>
+      <div class="card-body">
+        <div id="validatorGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="empty-state" style="grid-column:span 2">LOADING VALIDATORS...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leader history -->
+  <div class="card" style="margin-top:18px">
+    <div class="card-header">
+      <span class="card-title">👑 Proposer / Leader History</span>
+      <span class="card-sub">LAST 30 OBSERVED LEADERS</span>
+    </div>
+    <div class="card-body">
+      <div class="scroll-box" id="leaderHistory">
+        <div class="empty-state">COLLECTING LEADER DATA...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════ PAGE: LEDGER ══════════════════════ -->
+<div class="page" id="page-ledger">
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">🔗 Full Transaction Ledger</span>
+      <span class="card-sub">LAST 50 TXS · BYZANTINE FAULT TOLERANT · IMMUTABLE</span>
+    </div>
+    <div class="card-body">
+      <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+        <button class="filter-btn active" onclick="setLedgerFilter('ALL',this)">ALL</button>
+        <button class="filter-btn" onclick="setLedgerFilter('DEPOSIT',this)">DEPOSIT</button>
+        <button class="filter-btn" onclick="setLedgerFilter('TRANSFER',this)">TRANSFER</button>
+        <button class="filter-btn" onclick="setLedgerFilter('DRONE_DISPATCH',this)">DISPATCH</button>
+        <button class="filter-btn" onclick="setLedgerFilter('MISSION_REPORT',this)">REPORT</button>
+        <button class="filter-btn" onclick="setLedgerFilter('ALERT',this)">ALERT</button>
+      </div>
+      <div class="scroll-box" style="max-height:600px" id="txList">
+        <div class="empty-state">AWAITING TRANSACTIONS...</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="watermark">MANGOCHAIN · TEC502 · BFT CONSENSUS</div>
+
+<script>
+// ── Constants ─────────────────────────────────────────────────────────────────
+const nationFlags  = {usa:'🇺🇸',israel:'🇮🇱',iran:'🇮🇷',maritimecorp:'🚢'};
+const nationLabels = {usa:'UNITED STATES',israel:'ISRAEL',iran:'IRAN',maritimecorp:'MARITIME CORP'};
+const fiatSymbols  = {USD:'$',ILS:'₪',IRR:'﷼',EUR:'€'};
+const TX_COLORS    = {DEPOSIT:'#00e676',ALERT:'#ff1744',DRONE_DISPATCH:'#ff6d00',MISSION_REPORT:'#29b6f6',DRONE_STATUS:'#4a6a82',TRANSFER:'#f0a500'};
+const SEV_COLORS   = {'1':'#4a6a82','2':'#29b6f6','3':'#ff6d00','4':'#ff1744'};
+
+let myNation='', myFiat='', myRate=1;
+
+// Leader history ring buffer (last 30)
+const leaderLog = [];
+let allReports = [];
+let allTxs = [];
+let activeReportFilter = 'all';
+let activeLedgerFilter = 'ALL';
+
+function setReportFilter(filter, btn) {
+  activeReportFilter = filter;
+  document.querySelectorAll('#reportList').forEach(()=>{});
+  btn.closest('.card-body').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderReports();
+}
+
+function setLedgerFilter(filter, btn) {
+  activeLedgerFilter = filter;
+  btn.closest('.card-body').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLedger();
+}
+
+function renderReports() {
+  const filtered = activeReportFilter === 'all'
+    ? allReports
+    : allReports.filter(r => r.drone_id === activeReportFilter);
+  updateReports(filtered);
+}
+
+function renderLedger() {
+  const filtered = activeLedgerFilter === 'ALL'
+    ? allTxs
+    : allTxs.filter(tx => tx.type === activeLedgerFilter);
+  updateLedger(filtered);
+}
+const MAX_LEADERS = 30;
+
+// ── Boot ─────────────────────────────────────────────────────────────────────
+async function init() {
+  try {
+    const d = await fetch('/api/info').then(r=>r.json());
+    myNation=d.nation; myFiat=d.fiat; myRate=parseFloat(d.rate);
+    document.getElementById('nationFlag').textContent  = nationFlags[myNation]||'🏳️';
+    document.getElementById('nationName').textContent  = nationLabels[myNation]||myNation.toUpperCase();
+    document.getElementById('nationFiatHdr').textContent = myFiat;
+    document.getElementById('fiatLabel').textContent   = myFiat;
+    const sel=document.getElementById('transferTo');
+    for(const o of sel.options){if(o.value===myNation){o.remove();break;}}
+  } catch(e){console.error('init',e);}
+}
+
+// ── Page switching ─────────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── Main refresh ──────────────────────────────────────────────────────────────
+async function refresh() {
+  try {
+    const state = await fetch('/api/ledger?path=/api/state').then(r=>r.json());
+    document.getElementById('chainDot').style.background='var(--green)';
+    document.getElementById('blockHeight').textContent=state.height||'0';
+    updateDashboard(state);
+    updateAnalytics(state);
+  } catch(e){
+    document.getElementById('chainDot').style.background='var(--red)';
+  }
+}
+
+async function refreshConsensus() {
+  try {
+    const data = await fetch('/api/consensus').then(r=>r.json());
+    updateConsensus(data);
+  } catch(e){ console.warn('consensus fetch failed',e); }
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function updateDashboard(state) {
+  const myAcc = (state.accounts||{})[myNation];
+  document.getElementById('myBalance').textContent = myAcc?myAcc.balance.toFixed(2):'0.00';
+
+  const drones = Object.values(state.drones||{});
+  const busy    = drones.filter(d=>d.status==='BUSY').length;
+  const crashed = drones.filter(d=>d.status==='CRASHED').length;
+  const activeEl = document.getElementById('activeDrones');
+  activeEl.textContent = busy+'/'+drones.length;
+  activeEl.style.color = crashed>0?'var(--red)':'var(--gold2)';
+  crashed>0 ? showCrashBanner(drones.filter(d=>d.status==='CRASHED')) : removeCrashBanner();
+
+  const alerts = Object.values(state.alerts||{});
+  document.getElementById('pendingAlerts').textContent = alerts.filter(a=>a.status==='PENDING').length;
+  document.getElementById('totalReports').textContent  = (state.reports||[]).length;
+
+  updateDrones(drones);
+  updateAlerts(alerts);
+  updateNationLedger(state.accounts||{});
+  allReports = state.reports||[]; renderReports();
+  updateLedgerData(state.tx_history||[]);
+}
+
+function updateDrones(drones) {
+  const grid = document.getElementById('droneGrid');
+  if(!drones.length){grid.innerHTML='<div class="empty-state" style="grid-column:span 3">NO DRONES</div>';return;}
+  grid.innerHTML=drones.map(d=>{
+    const sc='status-'+d.status.toLowerCase(), cc='drone-card '+d.status.toLowerCase();
+    let icon='✅', extra='';
+    if(d.status==='CRASHED'){
+      icon='💥';
+      const ct=d.crashed_at?new Date(d.crashed_at).toLocaleTimeString():'—';
+      extra=`<div class="drone-alert" style="color:var(--red)">CRASHED @ ${ct}</div><div class="drone-alert">Alert re-queued</div>`;
+    } else if(d.status==='OFFLINE'){
+      icon='📴';
+    } else if(d.status==='BUSY'){
+      icon='🚁';
+      if(d.current_alert_id) extra=`<div class="drone-alert">→ ${d.current_alert_id}</div>`;
+    }
+    return `<div class="${cc}"><span class="drone-icon">${icon}</span><div class="drone-id">${d.drone_id.toUpperCase()}</div><span class="drone-status ${sc}">${d.status}</span>${extra}</div>`;
+  }).join('');
+  document.getElementById('droneTimestamp').textContent='UPDATED '+new Date().toLocaleTimeString();
+}
+
+function updateAlerts(alerts) {
+  const el=document.getElementById('alertList');
+  if(!alerts.length){el.innerHTML='<div class="empty-state">NO ALERTS</div>';return;}
+  alerts.sort((a,b)=>b.severity-a.severity||(new Date(a.created_at)-new Date(b.created_at)));
+  el.innerHTML=alerts.slice(0,20).map(a=>{
+    const cost=a.dispatch_cost?`<div style="font-size:.6rem;font-family:'Share Tech Mono',monospace;color:var(--gold);margin-top:2px">💰 ${a.dispatch_cost.toFixed(2)} MANGO ← ${(nationLabels[a.paid_by]||a.paid_by||'').toUpperCase()}</div>`:'';
+    return `<div class="alert-row"><span class="sev-badge sev-${a.severity}">SEV ${a.severity}</span><div class="alert-body"><div class="alert-type">${a.type.replace(/_/g,' ')}</div><div class="alert-meta">${a.alert_id} · ${a.location||''} · ${a.sector_id}</div>${cost}</div><span class="alert-status-badge ast-${a.status.toLowerCase()}">${a.status}</span></div>`;
+  }).join('');
+}
+
+function updateNationLedger(accounts) {
+  const el=document.getElementById('nationLedger');
+  const entries=Object.values(accounts);
+  if(!entries.length){el.innerHTML='<div class="empty-state">NO ACCOUNTS</div>';return;}
+  el.innerHTML=entries.map(a=>`
+    <div class="nation-row">
+      <div class="nation-info">
+        <span class="flag-sm">${nationFlags[a.nation]||'🏳️'}</span>
+        <div><div class="nation-label">${nationLabels[a.nation]||a.nation.toUpperCase()}</div><div class="nation-fiat-label">${a.fiat}</div></div>
+      </div>
+      <div class="balance">${a.balance.toFixed(4)} 🥭</div>
+    </div>`).join('');
+}
+
+function updateReports(reports) {
+  const el=document.getElementById('reportList');
+  if(!reports.length){el.innerHTML='<div class="empty-state">NO REPORTS YET</div>';return;}
+  const sevColor=['','var(--muted)','var(--blue)','var(--gold)','var(--orange)'];
+  el.innerHTML=[...reports].reverse().slice(0,10).map(r=>{
+    const dur = r.start_time&&r.end_time ? Math.round((new Date(r.end_time)-new Date(r.start_time))/1000)+'s' : '—';
+    const sev = r.severity||0;
+    const sevLabel=['','INFO','LOW','MEDIUM','CRITICAL'][sev]||'—';
+    const cost = r.dispatch_cost ? r.dispatch_cost.toFixed(2)+' MANGO' : '—';
+    const paidBy = r.paid_by ? r.paid_by.toUpperCase() : '—';
+    const loc = r.location||'—';
+    const type = r.alert_type ? r.alert_type.replace(/_/g,' ') : '—';
+    return `<div class="report-row">
+      <div class="report-outcome">✓ ${r.outcome.replace(/_/g,' ')}
+        <span style="font-size:.65rem;font-weight:400;color:var(--muted);margin-left:8px">${r.drone_id} · ${new Date(r.end_time).toLocaleTimeString()}</span>
+      </div>
+      <div class="report-meta" style="margin-top:4px;display:grid;grid-template-columns:1fr 1fr;gap:2px 12px">
+        <span>📍 ${loc}</span>
+        <span>🚨 <span style="color:${sevColor[sev]||'var(--text2)'}">${sevLabel}</span> · ${type}</span>
+        <span>⏱ Duration: ${dur}</span>
+        <span>💰 ${cost} charged to ${paidBy}</span>
+        <span style="grid-column:span 2;color:var(--muted);font-size:.6rem">${r.alert_id}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateLedger(txs) {
+  const el=document.getElementById('txList');
+  if(!txs.length){el.innerHTML='<div class="empty-state">AWAITING TXS...</div>';return;}
+  el.innerHTML=[...txs].reverse().map(tx=>{
+    const sig = tx.signature
+      ? `<div style="font-size:.55rem;font-family:'Share Tech Mono',monospace;color:var(--green);margin-top:3px">
+           🔏 SIGNED · pubkey: ${tx.public_key.substring(0,16)}… · sig: ${tx.signature.substring(0,16)}…
+         </div>`
+      : '';
+    return `<div class="tx-row">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="tx-type tx-${tx.type}">${tx.type.replace(/_/g,' ')}</span>
+        <span class="tx-id">${tx.id}</span>
+        <span class="tx-sender">${tx.sender}</span>
+        <span class="tx-time">${new Date(tx.timestamp).toLocaleTimeString()}</span>
+      </div>
+      ${sig}
+    </div>`;
+  }).join('');
+}
+
+function updateLedgerData(txs) {
+  allTxs = txs||[];
+  renderLedger();
+}
+
+// ── ANALYTICS ─────────────────────────────────────────────────────────────────
+function updateAnalytics(state) {
+  const txs     = state.tx_history||[];
+  const alerts  = Object.values(state.alerts||{});
+  const reports = state.reports||[];
+
+  // Stat tiles
+  document.getElementById('an-totalTx').textContent = txs.length;
+  const crashTxs = txs.filter(t=>t.type==='DRONE_STATUS');
+  document.getElementById('an-crashed').textContent = crashTxs.length;
+
+  const totalSpent = alerts.reduce((s,a)=>s+(a.dispatch_cost||0),0);
+  document.getElementById('an-spent').textContent = totalSpent.toFixed(1);
+
+  const durations = reports.map(r=>(new Date(r.end_time)-new Date(r.start_time))/1000).filter(d=>d>0);
+  const avgSec = durations.length ? Math.round(durations.reduce((a,b)=>a+b,0)/durations.length) : 0;
+  document.getElementById('an-avgMission').textContent = avgSec||'—';
+
+  drawAlertsTimeline(alerts);
+  drawTxDonut(txs);
+  drawPaymentChart(alerts);
+  drawSevChart(alerts);
+  drawOutcomeChart(reports);
+}
+
+// Bar chart: alerts over time (last 20 by created_at)
+function drawAlertsTimeline(alerts) {
+  const svg=document.getElementById('alertsChart');
+  const W=500,H=160,pad={l:30,r:10,t:20,b:30};
+  const sorted=[...alerts].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at)).slice(-20);
+  if(!sorted.length){svg.innerHTML=`<text x="250" y="80" text-anchor="middle" class="chart-label">NO DATA YET</text>`;return;}
+  const bw=Math.floor((W-pad.l-pad.r)/sorted.length)-2;
+  const sevMax=4;
+  const iw=W-pad.l-pad.r, ih=H-pad.t-pad.b;
+  let html=`<text x="${W/2}" y="12" text-anchor="middle" class="chart-title-txt">ALERTS TIMELINE</text>`;
+  // Y axis lines
+  for(let s=1;s<=4;s++){
+    const y=pad.t+ih-(s/sevMax)*ih;
+    html+=`<line x1="${pad.l}" x2="${W-pad.r}" y1="${y}" y2="${y}" stroke="#1e3a52" stroke-width="1"/>`;
+    html+=`<text x="${pad.l-3}" y="${y+3}" text-anchor="end" class="chart-label">${s}</text>`;
+  }
+  sorted.forEach((a,i)=>{
+    const x=pad.l+i*(bw+2);
+    const bh=(a.severity/sevMax)*ih;
+    const y=pad.t+ih-bh;
+    const col=SEV_COLORS[String(a.severity)]||'#4a6a82';
+    const status=a.status==='COMPLETED'?'0.5':'1';
+    html+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" fill="${col}" opacity="${status}" rx="2">
+      <title>${a.alert_id}\n${a.type}\nSev ${a.severity}\n${a.status}</title></rect>`;
+    if(i%4===0){
+      const t=new Date(a.created_at).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'});
+      html+=`<text x="${x+bw/2}" y="${H-pad.b+12}" text-anchor="middle" class="chart-label" style="font-size:7px">${t}</text>`;
+    }
+  });
+  svg.innerHTML=html;
+}
+
+// Donut chart: TX type breakdown
+function drawTxDonut(txs) {
+  const svg=document.getElementById('txDonut');
+  const W=500,H=160,cx=120,cy=78,r=58,ri=32;
+  if(!txs.length){svg.innerHTML=`<text x="250" y="80" text-anchor="middle" class="chart-label">NO TXS YET</text>`;return;}
+  const counts={};
+  txs.forEach(t=>{counts[t.type]=(counts[t.type]||0)+1;});
+  const total=txs.length;
+  const types=Object.keys(counts);
+  let html=`<text x="${cx}" y="${H-6}" text-anchor="middle" class="chart-title-txt" style="font-size:8px">TX TYPES</text>`;
+  let angle=-Math.PI/2;
+  types.forEach((type,i)=>{
+    const frac=counts[type]/total;
+    const sweep=frac*2*Math.PI;
+    const x1=cx+r*Math.cos(angle), y1=cy+r*Math.sin(angle);
+    const x2=cx+r*Math.cos(angle+sweep), y2=cy+r*Math.sin(angle+sweep);
+    const xi1=cx+ri*Math.cos(angle), yi1=cy+ri*Math.sin(angle);
+    const xi2=cx+ri*Math.cos(angle+sweep), yi2=cy+ri*Math.sin(angle+sweep);
+    const lg=sweep>Math.PI?1:0;
+    const col=TX_COLORS[type]||'#4a6a82';
+    html+=`<path d="M${xi1},${yi1} L${x1},${y1} A${r},${r} 0 ${lg},1 ${x2},${y2} L${xi2},${yi2} A${ri},${ri} 0 ${lg},0 ${xi1},${yi1}Z" fill="${col}" opacity=".85"><title>${type}: ${counts[type]}</title></path>`;
+    angle+=sweep;
+  });
+  // Legend
+  let ly=18;
+  types.forEach((type,i)=>{
+    const col=TX_COLORS[type]||'#4a6a82';
+    const pct=((counts[type]/total)*100).toFixed(0);
+    const label=type.replace(/_/g,' ');
+    html+=`<rect x="210" y="${ly-7}" width="8" height="8" fill="${col}" rx="2"/>`;
+    html+=`<text x="222" y="${ly}" class="chart-label" style="font-size:8px;fill:#8aafc4">${label}</text>`;
+    html+=`<text x="490" y="${ly}" text-anchor="end" class="chart-label" style="font-size:8px;fill:${col}">${pct}%</text>`;
+    ly+=13;
+  });
+  svg.innerHTML=html;
+}
+
+// Horizontal bar: payment per nation
+function drawPaymentChart(alerts) {
+  const svg=document.getElementById('paymentChart');
+  const W=500,H=160,pad={l:100,r:60,t:20,b:10};
+  const paid={};
+  alerts.forEach(a=>{if(a.paid_by&&a.dispatch_cost){paid[a.paid_by]=(paid[a.paid_by]||0)+a.dispatch_cost;}});
+  const nations=Object.keys(paid);
+  if(!nations.length){svg.innerHTML=`<text x="250" y="80" text-anchor="middle" class="chart-label">NO DISPATCHES YET</text>`;return;}
+  const maxVal=Math.max(...Object.values(paid));
+  const iw=W-pad.l-pad.r, ih=H-pad.t-pad.b;
+  const bh=Math.min(22,Math.floor(ih/nations.length)-4);
+  let html=`<text x="${W/2}" y="12" text-anchor="middle" class="chart-title-txt">MANGO PAID PER NATION</text>`;
+  nations.forEach((n,i)=>{
+    const y=pad.t+i*(bh+6);
+    const bw=Math.round((paid[n]/maxVal)*iw);
+    const col=['#00e676','#29b6f6','#ff6d00','#ce93d8'][i%4];
+    const flag=nationFlags[n]||'';
+    const label=(nationLabels[n]||n).substring(0,12);
+    html+=`<text x="${pad.l-4}" y="${y+bh/2+4}" text-anchor="end" class="chart-label" style="fill:#8aafc4">${flag} ${label}</text>`;
+    html+=`<rect x="${pad.l}" y="${y}" width="${bw}" height="${bh}" fill="${col}" opacity=".75" rx="3"><title>${n}: ${paid[n].toFixed(2)} MANGO</title></rect>`;
+    html+=`<text x="${pad.l+bw+4}" y="${y+bh/2+4}" class="chart-label" style="fill:${col}">${paid[n].toFixed(1)}</text>`;
+  });
+  svg.innerHTML=html;
+}
+
+// Grouped bar: severity counts
+function drawSevChart(alerts) {
+  const svg=document.getElementById('sevChart');
+  const W=500,H=160,pad={l:30,r:10,t:20,b:30};
+  const counts={1:0,2:0,3:0,4:0};
+  alerts.forEach(a=>{counts[a.severity]=(counts[a.severity]||0)+1;});
+  const labels=['LOW','MED','HIGH','CRIT'];
+  const maxVal=Math.max(...Object.values(counts),1);
+  const iw=W-pad.l-pad.r, ih=H-pad.t-pad.b;
+  const bw=Math.floor(iw/4)-8;
+  let html=`<text x="${W/2}" y="12" text-anchor="middle" class="chart-title-txt">SEVERITY DISTRIBUTION</text>`;
+  [1,2,3,4].forEach((sev,i)=>{
+    const x=pad.l+i*(bw+8)+4;
+    const bh=Math.round((counts[sev]/maxVal)*ih);
+    const y=pad.t+ih-bh;
+    const col=SEV_COLORS[String(sev)];
+    html+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" fill="${col}" opacity=".8" rx="3"><title>Sev ${sev}: ${counts[sev]} alerts</title></rect>`;
+    html+=`<text x="${x+bw/2}" y="${H-pad.b+12}" text-anchor="middle" class="chart-label">${labels[i]}</text>`;
+    if(counts[sev]>0) html+=`<text x="${x+bw/2}" y="${y-3}" text-anchor="middle" class="chart-label" style="fill:${col}">${counts[sev]}</text>`;
+  });
+  svg.innerHTML=html;
+}
+
+// Horizontal bar: mission outcomes
+function drawOutcomeChart(reports) {
+  const svg=document.getElementById('outcomeChart');
+  const W=900,H=140,pad={l:160,r:60,t:20,b:10};
+  const counts={};
+  reports.forEach(r=>{counts[r.outcome]=(counts[r.outcome]||0)+1;});
+  const outcomes=Object.keys(counts);
+  if(!outcomes.length){svg.innerHTML=`<text x="450" y="70" text-anchor="middle" class="chart-label">NO REPORTS YET</text>`;return;}
+  const maxVal=Math.max(...Object.values(counts));
+  const iw=W-pad.l-pad.r, ih=H-pad.t-pad.b;
+  const bh=Math.min(20,Math.floor(ih/outcomes.length)-4);
+  const palette=['#29b6f6','#00e676','#ff6d00','#ce93d8','#ff1744'];
+  let html=`<text x="${W/2}" y="12" text-anchor="middle" class="chart-title-txt">MISSION OUTCOMES</text>`;
+  outcomes.forEach((o,i)=>{
+    const y=pad.t+i*(bh+5);
+    const bw=Math.round((counts[o]/maxVal)*iw);
+    const col=palette[i%palette.length];
+    const label=o.replace(/_/g,' ');
+    html+=`<text x="${pad.l-4}" y="${y+bh/2+4}" text-anchor="end" class="chart-label" style="fill:#8aafc4;font-size:9px">${label}</text>`;
+    html+=`<rect x="${pad.l}" y="${y}" width="${bw}" height="${bh}" fill="${col}" opacity=".75" rx="3"/>`;
+    html+=`<text x="${pad.l+bw+6}" y="${y+bh/2+4}" class="chart-label" style="fill:${col}">${counts[o]}x</text>`;
+  });
+  svg.innerHTML=html;
+}
+
+// ── CONSENSUS ─────────────────────────────────────────────────────────────────
+function updateConsensus(data) {
+  const ts=new Date().toLocaleTimeString();
+  document.getElementById('consTimestamp').textContent='UPDATED '+ts;
+
+  const result=data.status?.result||{};
+  const syncInfo=result.sync_info||{};
+  const nodeInfo=result.node_info||{};
+  const valInfo=result.validator_info||{};
+
+  // Use proposer_address from latest block header — this is the REAL current proposer
+  const proposerAddr = (data.block?.result?.block?.header?.proposer_address || '—').toUpperCase();
+  const thisNodeAddr = (valInfo.address||'—').toUpperCase();
+  const currentHeight = syncInfo.latest_block_height||'—';
+  const lastBlock = syncInfo.latest_block_time ? new Date(syncInfo.latest_block_time).toLocaleTimeString() : '—';
+  const catching = syncInfo.catching_up ? '⚠ SYNCING' : '✓ SYNCED';
+
+  document.getElementById('consState').innerHTML=`
+    <div class="cons-row"><span class="cons-key">CHAIN ID</span><span class="cons-val">${nodeInfo.network||'—'}</span></div>
+    <div class="cons-row"><span class="cons-key">LATEST BLOCK</span><span class="cons-val">${currentHeight}</span></div>
+    <div class="cons-row"><span class="cons-key">LAST BLOCK TIME</span><span class="cons-val">${lastBlock}</span></div>
+    <div class="cons-row"><span class="cons-key">SYNC STATUS</span><span class="cons-val" style="color:${syncInfo.catching_up?'var(--orange)':'var(--green)'}">${catching}</span></div>
+    <div class="cons-row"><span class="cons-key">THIS NODE ADDR</span><span class="cons-val" style="font-size:.6rem">${thisNodeAddr.substring(0,20)}…</span></div>
+    <div class="cons-row"><span class="cons-key">CURRENT PROPOSER</span><span class="cons-val" style="font-size:.6rem;color:var(--gold)">${proposerAddr.substring(0,20)}…</span></div>
+    <div class="cons-row"><span class="cons-key">VOTING POWER</span><span class="cons-val">${valInfo.voting_power||'—'}</span></div>
+    <div class="cons-row"><span class="cons-key">BFT TOLERANCE</span><span class="cons-val">f = 1 of 4 nodes</span></div>
+  `;
+
+  // Validators — use own_node_addr from gateway to identify this nation's node
+  // Cannot use index because CometBFT reorders validators alphabetically
+  const vals=(data.validators?.result?.validators)||[];
+  const grid=document.getElementById('validatorGrid');
+  if(!vals.length){grid.innerHTML='<div class="empty-state" style="grid-column:span 2">NO VALIDATOR DATA</div>';return;}
+  const ownAddr = (data.own_node_addr||'').toUpperCase();
+  grid.innerHTML=vals.map((v,i)=>{
+    const isThis=ownAddr&&(v.address||'').toUpperCase()===ownAddr;
+    const power=v.voting_power||'?';
+    return `<div class="val-card${isThis?' leader':''}">
+      <span class="val-badge ${isThis?'leader-badge':'peer-badge'}">${isThis?'👑 THIS NODE':'VALIDATOR '+(i+1)}</span>
+      <div class="val-addr">${v.address||'—'}</div>
+      <div class="val-power">${power}</div>
+      <div class="val-power-label">VOTING POWER</div>
+    </div>`;
+  }).join('');
+
+  // Leader log — record REAL proposer from block header (round-robin changes each block)
+  if(proposerAddr&&proposerAddr!=='—'&&currentHeight!=='—'){
+    const last=leaderLog[leaderLog.length-1];
+    if(!last||last.height!==currentHeight){
+      leaderLog.push({height:currentHeight,addr:proposerAddr,time:ts});
+      if(leaderLog.length>MAX_LEADERS) leaderLog.shift();
+    }
+  }
+  const lhEl=document.getElementById('leaderHistory');
+  if(!leaderLog.length){lhEl.innerHTML='<div class="empty-state">COLLECTING... (updates every 8s)</div>';return;}
+  lhEl.innerHTML=[...leaderLog].reverse().map(e=>`
+    <div class="lh-row">
+      <span class="lh-height">#${e.height}</span>
+      <span class="lh-addr">${e.addr}</span>
+      <span class="lh-time">${e.time}</span>
+    </div>`).join('');
+}
+
+// ── Deposit / Transfer ────────────────────────────────────────────────────────
+document.getElementById('depositAmount').addEventListener('input',function(){
+  const amt=parseFloat(this.value);
+  const prev=document.getElementById('depositPreview');
+  if(!amt||amt<=0){prev.innerHTML='Enter amount to preview conversion';return;}
+  const tokens=(amt*myRate).toFixed(4);
+  const sym=fiatSymbols[myFiat]||'';
+  prev.innerHTML=`${sym}${amt.toFixed(2)} ${myFiat} → <span>${tokens} MANGO</span> (rate: ${myRate})`;
+});
+
+async function submitDeposit() {
+  const amt=parseFloat(document.getElementById('depositAmount').value);
+  if(!amt||amt<=0){notify('Enter a valid amount','error');return;}
+  const btn=document.getElementById('depositBtn');
+  btn.disabled=true; btn.textContent='SUBMITTING...';
+  try {
+    const d=await fetch('/api/deposit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:amt})}).then(r=>r.json());
+    if(d.success){
+      notify(`✓ ${amt} ${myFiat} → ${d.tokens.toFixed(4)} MANGO`,'success');
+      document.getElementById('depositAmount').value='';
+      document.getElementById('depositPreview').innerHTML='Enter amount to preview conversion';
+    } else notify('Transaction failed','error');
+  } catch(e){notify('Network error: '+e.message,'error');}
+  btn.disabled=false; btn.textContent='▶ DEPOSIT TO MANGO POOL';
+}
+
+async function submitTransfer() {
+  const to=document.getElementById('transferTo').value;
+  const amt=parseFloat(document.getElementById('transferAmount').value);
+  if(!amt||amt<=0){notify('Enter a valid amount','error');return;}
+  try {
+    const d=await fetch('/api/transfer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,amount:amt})}).then(r=>r.json());
+    if(d.success){notify(`✓ Sent ${amt} MANGO to ${nationLabels[to]}`,'success');document.getElementById('transferAmount').value='';}
+    else notify('Transfer failed','error');
+  } catch(e){notify('Error: '+e.message,'error');}
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    t.classList.toggle('active',['deposit','transfer'][i]===tab);
+  });
+  document.querySelectorAll('.tab-content').forEach(c=>{
+    c.classList.toggle('active',c.id==='tab-'+tab);
+  });
+}
+
+// ── Crash banner ──────────────────────────────────────────────────────────────
+function showCrashBanner(crashed) {
+  let b=document.getElementById('crashBanner');
+  if(!b){
+    b=document.createElement('div'); b.id='crashBanner';
+    b.style.cssText='position:fixed;top:100px;left:0;right:0;z-index:200;background:rgba(255,23,68,.15);border-bottom:2px solid var(--red);padding:9px 28px;font-family:"Share Tech Mono",monospace;font-size:.77rem;color:var(--red);display:flex;align-items:center;gap:10px;';
+    document.body.appendChild(b);
+  }
+  b.innerHTML=`💥 <strong>DRONE LOSS</strong> — ${crashed.map(d=>d.drone_id.toUpperCase()).join(', ')} — Alert(s) re-queued`;
+}
+function removeCrashBanner(){const b=document.getElementById('crashBanner');if(b)b.remove();}
+
+// ── Notify ────────────────────────────────────────────────────────────────────
+function notify(msg,type){
+  const el=document.createElement('div');
+  el.className=`notification ${type}`; el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),3000);
+}
+
+// ── Main loop ─────────────────────────────────────────────────────────────────
+init();
+refresh();
+refreshConsensus();
+setInterval(refresh, 8000);
+setInterval(refreshConsensus, 10000);
+</script>
+</body>
+</html>
