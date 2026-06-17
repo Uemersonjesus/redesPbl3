@@ -3,6 +3,29 @@
 	"addrs": [
 		{
 			"addr": {
+				"id": "34355440d13ed5a38d929915a973b4b91f2fb863",
+				"ip": "172.18.0.8",
+				"port": 26656
+			},
+			"src": {
+				"id": "9bc780d56f58853c7d7e1ded18cab000b2cd7ce4",
+				"ip": "0.0.0.0",
+				"port": 26656
+			},
+			"buckets": [
+				217,
+				48,
+				152,
+				173
+			],
+			"attempts": 9,
+			"bucket_type": 1,
+			"last_attempt": "2026-06-17T10:33:58.608123835Z",
+			"last_success": "0001-01-01T00:00:00Z",
+			"last_ban_time": "0001-01-01T00:00:00Z"
+		},
+		{
+			"addr": {
 				"id": "a2c5c5cae377ce4300810f2f69692696ebc2185f",
 				"ip": "172.18.0.7",
 				"port": 26656
@@ -15,11 +38,12 @@
 			"buckets": [
 				217,
 				48,
-				152
+				152,
+				173
 			],
-			"attempts": 14,
+			"attempts": 18,
 			"bucket_type": 1,
-			"last_attempt": "2026-06-15T19:43:25.626064823Z",
+			"last_attempt": "2026-06-17T10:34:27.040377419Z",
 			"last_success": "0001-01-01T00:00:00Z",
 			"last_ban_time": "0001-01-01T00:00:00Z"
 		},
@@ -40,9 +64,9 @@
 				48,
 				152
 			],
-			"attempts": 16,
+			"attempts": 27,
 			"bucket_type": 1,
-			"last_attempt": "2026-06-15T19:43:25.626068293Z",
+			"last_attempt": "2026-06-17T10:34:55.429350292Z",
 			"last_success": "0001-01-01T00:00:00Z",
 			"last_ban_time": "0001-01-01T00:00:00Z"
 		},
@@ -59,33 +83,13 @@
 			},
 			"buckets": [
 				48,
-				152
+				152,
+				173,
+				242
 			],
-			"attempts": 20,
+			"attempts": 44,
 			"bucket_type": 1,
-			"last_attempt": "2026-06-15T19:36:18.001205476Z",
-			"last_success": "0001-01-01T00:00:00Z",
-			"last_ban_time": "0001-01-01T00:00:00Z"
-		},
-		{
-			"addr": {
-				"id": "34355440d13ed5a38d929915a973b4b91f2fb863",
-				"ip": "172.18.0.8",
-				"port": 26656
-			},
-			"src": {
-				"id": "9bc780d56f58853c7d7e1ded18cab000b2cd7ce4",
-				"ip": "0.0.0.0",
-				"port": 26656
-			},
-			"buckets": [
-				217,
-				48,
-				152
-			],
-			"attempts": 4,
-			"bucket_type": 1,
-			"last_attempt": "2026-06-15T19:37:15.791541355Z",
+			"last_attempt": "2026-06-17T10:38:14.374888372Z",
 			"last_success": "0001-01-01T00:00:00Z",
 			"last_ban_time": "0001-01-01T00:00:00Z"
 		}

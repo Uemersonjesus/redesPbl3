@@ -3,26 +3,6 @@
 	"addrs": [
 		{
 			"addr": {
-				"id": "34355440d13ed5a38d929915a973b4b91f2fb863",
-				"ip": "172.18.0.8",
-				"port": 26656
-			},
-			"src": {
-				"id": "ea8208caca0acc9006600e8b992b4d1d4ef63e62",
-				"ip": "0.0.0.0",
-				"port": 26656
-			},
-			"buckets": [
-				61
-			],
-			"attempts": 0,
-			"bucket_type": 1,
-			"last_attempt": "2026-06-15T17:52:43.828138108Z",
-			"last_success": "0001-01-01T00:00:00Z",
-			"last_ban_time": "0001-01-01T00:00:00Z"
-		},
-		{
-			"addr": {
 				"id": "9bc780d56f58853c7d7e1ded18cab000b2cd7ce4",
 				"ip": "172.18.0.6",
 				"port": 26656
@@ -33,11 +13,12 @@
 				"port": 26656
 			},
 			"buckets": [
-				61
+				61,
+				0
 			],
-			"attempts": 0,
+			"attempts": 1,
 			"bucket_type": 1,
-			"last_attempt": "2026-06-15T17:52:43.828167027Z",
+			"last_attempt": "2026-06-16T20:08:53.388800145Z",
 			"last_success": "0001-01-01T00:00:00Z",
 			"last_ban_time": "0001-01-01T00:00:00Z"
 		},
@@ -53,11 +34,53 @@
 				"port": 26656
 			},
 			"buckets": [
-				61
+				61,
+				0
 			],
-			"attempts": 0,
+			"attempts": 1,
 			"bucket_type": 1,
-			"last_attempt": "2026-06-15T17:52:43.828172853Z",
+			"last_attempt": "2026-06-16T20:08:53.390890237Z",
+			"last_success": "0001-01-01T00:00:00Z",
+			"last_ban_time": "0001-01-01T00:00:00Z"
+		},
+		{
+			"addr": {
+				"id": "ea8208caca0acc9006600e8b992b4d1d4ef63e62",
+				"ip": "172.18.0.9",
+				"port": 26656
+			},
+			"src": {
+				"id": "9bc780d56f58853c7d7e1ded18cab000b2cd7ce4",
+				"ip": "0.0.0.0",
+				"port": 26656
+			},
+			"buckets": [
+				0
+			],
+			"attempts": 8,
+			"bucket_type": 1,
+			"last_attempt": "2026-06-16T20:16:23.295791722Z",
+			"last_success": "0001-01-01T00:00:00Z",
+			"last_ban_time": "0001-01-01T00:00:00Z"
+		},
+		{
+			"addr": {
+				"id": "34355440d13ed5a38d929915a973b4b91f2fb863",
+				"ip": "172.18.0.8",
+				"port": 26656
+			},
+			"src": {
+				"id": "ea8208caca0acc9006600e8b992b4d1d4ef63e62",
+				"ip": "0.0.0.0",
+				"port": 26656
+			},
+			"buckets": [
+				61,
+				0
+			],
+			"attempts": 1,
+			"bucket_type": 1,
+			"last_attempt": "2026-06-16T20:08:53.485841579Z",
 			"last_success": "0001-01-01T00:00:00Z",
 			"last_ban_time": "0001-01-01T00:00:00Z"
 		}
