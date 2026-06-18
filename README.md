@@ -224,9 +224,9 @@ docker compose -f docker-compose.pc2.yml up --build -d
 
 Os nós encontram-se automaticamente via gossip P2P. Os blocos começam a avançar quando ambos os PCs estão activos — o consenso requer 3/4 nós.
 
-### Dashboards em LAN para cada pc qcorrepodente ao node rode a dashboard 
+### Dashboards em LAN para cada pc correpoden ao node que estas a rodar. Isto é , pc1 podes ver  Usa  e Israel.
 
-| Nação | URL | Moeda |
+/ Nação | URL | Moeda |
 |-------|-----|-------|
 | USA | http://localhost:3001 | USD |
 | Israel | http://localhost:3002 | ILS |
