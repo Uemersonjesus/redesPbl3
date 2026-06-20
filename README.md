@@ -216,7 +216,7 @@ docker compose -f docker-compose.pc2.yml up --build -d
 Os nós encontram-se automaticamente via gossip P2P. Os blocos começam a avançar quando ambos os PCs estão activos — o consenso requer 3/4 nós.
 
 ### Dashboards em LAN
-é possível acessar apenas as interfaces do node que estão naquele pc
+É possível acessar apenas as interfaces do node que estão naquele pc
 ---
 
 ## Reset completo — apagar estado da chain
