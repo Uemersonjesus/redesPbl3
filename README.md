@@ -5,7 +5,7 @@ Byzantine Fault Tolerant distributed ledger para coordenação de frota de drone
 
 ---
 
-## Arquitectura
+## Arquitetura
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -105,8 +105,8 @@ docker compose up --build -d
 
 ### Aceder às dashboards
 
-| Nação | URL | Moeda |
-|-------|-----|-------|
+| Nação / Empresa | URL | Moeda |
+|-----------------|-----|-------|
 | USA | http://localhost:3001 | USD |
 | Israel | http://localhost:3002 | ILS |
 | Iran | http://localhost:3003 | IRR |
@@ -216,7 +216,7 @@ docker compose -f docker-compose.pc2.yml up --build -d
 Os nós encontram-se automaticamente via gossip P2P. Os blocos começam a avançar quando ambos os PCs estão activos — o consenso requer 3/4 nós.
 
 ### Dashboards em LAN
-é possível acessar apenas as interfaces do node que estão naquele pc
+É possível acessar apenas as interfaces do node que estão naquele pc
 ---
 
 ## Reset completo — apagar estado da chain
@@ -361,8 +361,8 @@ http://localhost:8080/api/reports   # Laudos de missoes
 
 ## Node IDs (referencia para configuracao LAN)
 
-| No | Node ID |
-|----|---------|
+|   No  | Node ID |
+|-------|---------|
 | node0 | 34355440d13ed5a38d929915a973b4b91f2fb863 |
 | node1 | 9bc780d56f58853c7d7e1ded18cab000b2cd7ce4 |
 | node2 | a2c5c5cae377ce4300810f2f69692696ebc2185f |
