@@ -1,7 +1,7 @@
 # 🥭 MangoChain — Strait of Hormuz Consortium
 
 **TEC502 — Problema 3: Economia e Auditoria de Guerra**
-Byzantine Fault Tolerant distributed ledger para coordenação de frota de drones com registo imutável de auditoria.
+Byzantine Fault Tolerant distributed ledger para coordenação de frota de drones com registro imutável de auditoria.
 
 ---
 
@@ -32,7 +32,7 @@ Byzantine Fault Tolerant distributed ledger para coordenação de frota de drone
 ```
 
 Todas as dashboards lêem o estado de `abci-app-0` como fonte única de verdade.
-Se `abci-app-0` cair, as dashboards param de actualizar — mas o consenso BFT continua.
+Se `abci-app-0` cair, as dashboards param de atualizar — mas o consenso BFT continua.
 Cada `abci-app-N` persiste o seu estado em disco e recupera automaticamente após queda via replay de blocos.
 
 ---
@@ -49,7 +49,7 @@ docker compose version  # >= 2.20
 wsl --install
 ```
 
-**Linux:** o utilizador deve pertencer ao grupo docker.
+**Linux:** o usuário deve pertencer ao grupo docker.
 ```bash
 groups  # verificar se "docker" aparece na lista
 ```
@@ -58,7 +58,7 @@ groups  # verificar se "docker" aparece na lista
 
 ## IMPORTANTE — Configuração obrigatória antes de iniciar
 
-O projecto vem com IPs de LAN pré-configurados. Antes de rodar, é necessário escolher o modo de uso e configurar os ficheiros correspondentes.
+O projeto vem com IPs de LAN pré-configurados. Antes de rodar, é necessário escolher o modo de uso e configurar os ficheiros correspondentes.
 
 ---
 
@@ -66,7 +66,7 @@ O projecto vem com IPs de LAN pré-configurados. Antes de rodar, é necessário 
 
 ### Passo 1 — Editar o ficheiro `.env`
 
-Abrir o ficheiro `.env` na raiz do projecto e colocar exactamente estes valores para executar em um unico pc:
+Abrir o ficheiro `.env` na raiz do projeto e colocar exactamente estes valores para executar em um único pc:
 
 ```
 NODE0_HOST=node0
@@ -103,9 +103,9 @@ persistent_peers = "34355440d13ed5a38d929915a973b4b91f2fb863@node0:26656,9bc780d
 docker compose up --build -d
 ```
 
-### Aceder às dashboards
+### Acessar às dashboards
 
-| Nação / Empresa | URL | Moeda |
+|  Nação/Empresa  | URL | Moeda |
 |-----------------|-----|-------|
 | USA | http://localhost:3001 | USD |
 | Israel | http://localhost:3002 | ILS |
@@ -158,7 +158,7 @@ Linha a colocar em TODOS os ficheiros (substituir pelos IPs reais):
 persistent_peers = "34355440d13ed5a38d929915a973b4b91f2fb863@IP_PC1:26656,9bc780d56f58853c7d7e1ded18cab000b2cd7ce4@IP_PC1:26666,a2c5c5cae377ce4300810f2f69692696ebc2185f@IP_PC2:26656,ea8208caca0acc9006600e8b992b4d1d4ef63e62@IP_PC2:26666"
 ```
 
-Exemplo com os IPs actuais:
+Exemplo com os IPs atuais:
 ```
 persistent_peers = "34355440d13ed5a38d929915a973b4b91f2fb863@192.168.100.64:26656,9bc780d56f58853c7d7e1ded18cab000b2cd7ce4@192.168.100.64:26666,a2c5c5cae377ce4300810f2f69692696ebc2185f@192.168.100.8:26656,ea8208caca0acc9006600e8b992b4d1d4ef63e62@192.168.100.8:26666"
 ```
@@ -181,7 +181,7 @@ ABCI_API_URL=http://abci-app-0:8080
 
 ### Passo 4 — Editar o `.env` no PC2
 
-> ATENCAO: No PC2 o ABCI_API_URL deve usar o IP real do PC1, nao o nome Docker.
+> ATENCÃO: no PC2 o ABCI_API_URL deve usar o IP real do PC1, não o nome Docker.
 
 ```
 NODE0_HOST=192.168.100.64
@@ -197,7 +197,7 @@ NODE3_RPC_PORT=26667
 ABCI_API_URL=http://192.168.100.64:8080
 ```
 
-### Passo 5 — Copiar o projecto para o PC2
+### Passo 5 — Copiar o projeto para o PC2
 
 Copiar a pasta completa (incluindo `nodes/` já configurado) para o PC2 via pen drive ou partilha de rede.
 
@@ -213,7 +213,7 @@ docker compose -f docker-compose.pc1.yml up --build -d
 docker compose -f docker-compose.pc2.yml up --build -d
 ```
 
-Os nós encontram-se automaticamente via gossip P2P. Os blocos começam a avançar quando ambos os PCs estão activos — o consenso requer 3/4 nós.
+Os nós encontram-se automaticamente via gossip P2P. Os blocos começam a avançar quando ambos os PCs estão ativos — o consenso requer 3/4 nós.
 
 ### Dashboards em LAN
 É possível acessar apenas as interfaces do node que estão naquele pc
@@ -322,8 +322,8 @@ http://localhost:26657/status       # Estado do node0
 http://localhost:26657/validators   # Validadores activos
 http://localhost:8080/api/state     # Estado completo da chain
 http://localhost:8080/api/drones    # Estado dos drones
-http://localhost:8080/api/txhistory # Ultimas 50 transaccoes
-http://localhost:8080/api/reports   # Laudos de missoes
+http://localhost:8080/api/txhistory # Ultimas 50 transações
+http://localhost:8080/api/reports   # Laudos de missões
 ```
 
 ---
@@ -332,15 +332,15 @@ http://localhost:8080/api/reports   # Laudos de missoes
 
 | Propriedade | Comportamento |
 |-------------|---------------|
-| Consenso requer 2/3+ | PC1 sozinho nao avanca blocos |
-| Tolera f=1 falha | Com 3/4 nos o sistema funciona normalmente |
-| Recuperacao apos queda | No sincroniza automaticamente via replay |
-| Imutabilidade | Transaccoes visiveis em todos os nos |
+| Consenso requer 2/3+ | PC1 sozinho não avanca blocos |
+| Tolera f=1 falha | Com 3/4 nós o sistema funciona normalmente |
+| Recuperacão após queda | nó sincroniza automaticamente via replay |
+| Imutabilidade | transações visiveis em todos os nos |
 | Falha com f>=2 | Chain congela correctamente |
 
 ---
 
-## Tipos de Transaccao
+## Tipos de Transação
 
 | Tipo | Quem envia | O que faz |
 |------|-----------|-----------|
@@ -349,7 +349,7 @@ http://localhost:8080/api/reports   # Laudos de missoes
 | ALERT | Sensor | Regista incidente maritimo na fila |
 | DRONE_DISPATCH | Scheduler | Atribui drone ao alerta pendente |
 | MISSION_REPORT | Scheduler | Regista resultado da missao |
-| DRONE_STATUS | Drone | Reporta heartbeat, crash, recuperacao |
+| DRONE_STATUS | Drone | Reporta heartbeat, crash, recuperação |
 
 ## Taxas de Cambio (fiat -> MANGO)
 - USD: 1.0 MANGO por dolar
@@ -361,7 +361,7 @@ http://localhost:8080/api/reports   # Laudos de missoes
 
 ## Node IDs (referencia para configuracao LAN)
 
-|   No  | Node ID |
+|   Nó  | Node ID |
 |-------|---------|
 | node0 | 34355440d13ed5a38d929915a973b4b91f2fb863 |
 | node1 | 9bc780d56f58853c7d7e1ded18cab000b2cd7ce4 |
@@ -374,12 +374,12 @@ Se os IPs da LAN mudarem, editar:
 
 ---
 
-## Estrutura do projecto
+## Estrutura do projeto
 ```
 mango-chain/
 ├── abci-app/               # Aplicacao ABCI (Go)
 │   ├── main.go             # Servidor ABCI + HTTP API
-│   ├── app.go              # Logica de processamento de transaccoes
+│   ├── app.go              # Logica de processamento de transações
 │   └── types.go            # Tipos e structs do estado
 ├── scheduler/              # Servico de despacho (Go)
 ├── sensor/                 # Gerador de alertas (Go)
@@ -397,7 +397,7 @@ mango-chain/
 
 ## Parametros do sistema
 - Sensores geram 1 alerta a cada 45-90 segundos
-- Missoes duram 60-150 segundos conforme severidade
+- Missões duram 60-150 segundos conforme severidade
 - Probabilidade de crash simulado: 0.5% por ciclo de 20 segundos
-- Dashboards actualizam a cada 4 segundos
+- Dashboards atualizam a cada 4 segundos
 - Scheduler despacha por prioridade (severidade) e FIFO
